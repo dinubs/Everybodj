@@ -12,9 +12,18 @@ Change IP address at sockio-server/assets/js/player.js
 
 It's toward the bottom of the document.
 
-Run socket.io chat like
+Run the web server like this
 
 	node ./sockio-server/app.js
+
+Access the color suite page from browser with:
+	
+	localhost:3000 
+	
+Access the music visualizer page from browser with:
+	
+	localhost:3000/main
+	
 	
 
 Change IP address in Objective-C views, at top of document
