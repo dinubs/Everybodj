@@ -16,6 +16,18 @@
 			cos = Math.cos,
 			sin = Math.sin,
 			PI = Math.PI;
+	CanvasRenderingContext2D.prototype.roundRect = function (x, y, w, h, r) {
+	  if (w < 2 * r) r = w / 2;
+	  if (h < 2 * r) r = h / 2;
+	  this.beginPath();
+	  this.moveTo(x+r, y);
+	  this.arcTo(x+w, y,   x+w, y+h, r);
+	  this.arcTo(x+w, y+h, x,   y+h, r);
+	  this.arcTo(x,   y+h, x,   y,   r);
+	  this.arcTo(x,   y,   x+w, y,   r);
+	  this.closePath();
+	  return this;
+	}
   Dancer.addPlugin( 'waveform', function( canvasEl, options ) {
     options = options || {};
     var
@@ -67,26 +79,29 @@
           }
           break;
 				case 3:
-						ctx.clearRect( 0, 0, w, h );
-							// ctx.fillStyle = 'rgba(0,255,255,.5)';
-							// ctx.globalCompositeOperation = 'lighter';
-							time += .1;
-
-							// The number of particles to generate
-							i = 10000;
-
-							while( i-- ) {
-								// The magic
-								r = ( ( w ) * waveform[i] ) * ( cos( ( time + i ) * ( .05 + ( ( sin(time*0.00002) / PI ) * .2 ) ) ) / PI );
-
-								ctx.fillRect( sin(i) *  r + (Math.random() * (w - 100)), 
-												  cos(i) * r + (h), 
-												  3, 
-												  3 );
-							}
-							i = 0;
-						break;
+					ctx.clearRect( 0, 0, w, h );
+					// ctx.fillStyle = 'rgba(0,255,255,.5)';
+					// ctx.globalCompositeOperation = 'lighter';
+					time += .1;
+			
+					// The number of particles to generate
+					i = 10000;
+			
+					while( i-- ) {
+						// The magic
+						r = ( ( w ) * waveform[i] ) * ( cos( ( time + i ) * ( .05 + ( ( sin(time*0.00002) / PI ) * .2 ) ) ) / PI );
+			
+						ctx.fillRect( sin(i) *  r + (Math.random() * (w - 100)), 
+										  cos(i) * r + (h), 
+										  3, 
+										  3 );
 					}
+					i = 0;
+				break;
+				case 4:
+					ctx.roundRect(35, 10, 225, 110, 20).stroke();
+					break;
+			}
     });
 
     return this;
