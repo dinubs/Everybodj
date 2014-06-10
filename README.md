@@ -1,6 +1,6 @@
-Socket.io with objective-c example.
+##Socket.io with objective-c example.
 
-##For running the app
+###For running the app
 
 
 Change IP address at sockio-server/views/index.html 
