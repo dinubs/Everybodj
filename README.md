@@ -1,7 +1,21 @@
 ##Socket.io with objective-c example.
 
-###For running the app
+Connecting the DJ with the audience, one step at a time.
 
+######Current components:
+* Oscillator
+* Different types of visuals
+* Iphone app
+* Web page editor
+
+######Future components:
+* Camera view for iPhone app
+* Chat function on iPhone app and Web page editor
+* more visuals, more functionality for DJ page
+
+---
+
+###For running the app
 
 Change IP address at sockio-server/views/index.html 
 
