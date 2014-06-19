@@ -1,20 +1,21 @@
 {
-  "name": "Everybodj",
+  "name": "CrunchyMunchies",
   "version": "0.0.1",
   "description": "",
-  "main": "app.js",
+  "main": "web.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Gavin Dinubilo",
   "license": "ISC",
   "dependencies": {
-    "socket.io": "~0.2.0",
+    "logfmt": "~0.20.0",
     "express": "~3.4.8"
   },
-
+  
   "engines": {
     "node": "0.10.x"
   }
-
+   
 }
+
