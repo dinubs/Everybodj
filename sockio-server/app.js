@@ -17,10 +17,10 @@ var settings = {
 }
 
 
-app.get('/', function(request, response){
+app.get('/android', function(request, response){
   response.sendfile(__dirname + settings.view_directory + '/index.html')
 });
-app.get('/main', function(request, response){
+app.get('/', function(request, response){
 	response.sendfile(__dirname + settings.view_directory + '/song/index.html');
 });
 app.get('/ntunes', function(request, response){
