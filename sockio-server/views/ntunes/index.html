@@ -7,12 +7,18 @@
     <script type="text/javascript" src="scripts/prototype.js"></script>
   </head>
   <body>
-    <ul>
-      <li><a href="/tests/html5 audio.html">HTML5 &lt;audio&gt;</a></li>
-      <li><a href="/tests/html5 video.html">HTML5 &lt;video&gt;</a></li>
-      <li><a href="/tests/protected content with safari.html">Protected Content with Safari</a></li>
-      <li><a href="/tests/sound volume.html">Sound Volume</a></li>
-      <li><a href="/tests/browser.html">Song Browser</a></li>
-    </ul>
+
+    <script src="http://connect.soundcloud.com/sdk.js"></script>
+        <script>
+          SC.initialize({
+            client_id: 'ab607d302c6da74db4b68567374ba72c'
+          });
+
+          // stream track id 293
+          SC.stream("/tracks/293", function(sound){
+            console.log(sound);
+            sound.play();
+          });
+        </script>
   </body>
 </html>

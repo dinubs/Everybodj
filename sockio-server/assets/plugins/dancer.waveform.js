@@ -7,12 +7,18 @@
  */
 
 (function() {
+  Dancer.addPlugin( 'waveform', function( canvasEl, options ) {
+
+  hexToRGB = function(hex){
+    var r = hex >> 16;
+    var g = hex >> 8 & 0xFF;
+    var b = hex & 0xFF;
+    return [r,g,b];
+  }
+  var time = 0;
 	var d = document,
-			canvas = d.body.appendChild( d.createElement( 'canvas' ) ),
-			context = canvas.getContext( '2d' ),
-			time = 0,
-			w = 1,
-			h = 1,
+      h       = canvasEl.height,
+      w       = canvasEl.width,
 			cos = Math.cos,
 			sin = Math.sin,
 			PI = Math.PI;
@@ -28,7 +34,14 @@
 	  this.closePath();
 	  return this;
 	}
-  Dancer.addPlugin( 'waveform', function( canvasEl, options ) {
+	function average(waves) {
+		var total = 0;
+		for (var i = 0; i < waves.length; i++) {
+			total += Math.abs(waves[i]);
+		}
+		console.log(total / waves.length);
+		return total / waves.length;
+	}
     options = options || {};
     var
       ctx     = canvasEl.getContext( '2d' ),
@@ -46,7 +59,8 @@
       var waveform = this.getWaveform();
       switch(this.wave) {
         case 0:
-					ctx.fillStyle = "rgba(0,0,0,0.05)";
+          var color = hexToRGB(this.bgColor.slice(1));
+          ctx.fillStyle = "rgba("+color[0]+ ","+color[1]+","+color[2]+",0.05)";
 					ctx.fillRect(0,0,w,h);
           ctx.beginPath();
           ctx.moveTo( 0, h / 2 );
@@ -56,8 +70,10 @@
           ctx.stroke();
           ctx.closePath();
           break;
-        case 1: 
-		      ctx.clearRect( 0, 0, w, h );
+        case 1:
+					var color = hexToRGB(this.bgColor.slice(1));
+     ctx.fillStyle = "rgba("+color[0]+ ","+color[1]+","+color[2]+",0.05)";
+					ctx.fillRect(0,0,w,h);
           for ( var i = 0, l = waveform.length; i < 300 && i < count; i++ ) {
             ctx.beginPath();
             ctx.arc(w/4, h/2, Math.abs(waveform[i]) * (h/2), 0, 2 * Math.PI, false);
@@ -67,40 +83,41 @@
           }
           break;
         case 2:
-		      ctx.clearRect( 0, 0, w, h ); 
+          var color = hexToRGB(this.bgColor.slice(1));
+          ctx.fillStyle = "rgba("+color[0]+ ","+color[1]+","+color[2]+",0.05)";
+					ctx.fillRect(0,0,w,h);
           for ( var i = 0, l = waveform.length; i < 500 && i < count; i++ ) {
             ctx.beginPath();
             ctx.arc((Math.abs(waveform[i]) * w/4), h/2, Math.abs(waveform[i]) * (h/4), 0, 2 * Math.PI, false);
             ctx.stroke();
             ctx.beginPath();
             ctx.arc((Math.abs(waveform[i]) * w/2), h/2, Math.abs(waveform[i]) * (h/4), 0, 2 * Math.PI, false);
-            ctx.fill();
+            ctx.stroke();
             ctx.closePath();
           }
           break;
 				case 3:
-					ctx.clearRect( 0, 0, w, h );
+					var color = hexToRGB(this.bgColor.slice(1));
+         ctx.fillStyle = "rgba("+color[0]+ ","+color[1]+","+color[2]+",0.05)";
+         ctx.fillRect(0,0,w,h);
 					// ctx.fillStyle = 'rgba(0,255,255,.5)';
 					// ctx.globalCompositeOperation = 'lighter';
 					time += .1;
-			
+
 					// The number of particles to generate
 					i = 10000;
-			
+
 					while( i-- ) {
 						// The magic
 						r = ( ( w ) * waveform[i] ) * ( cos( ( time + i ) * ( .05 + ( ( sin(time*0.00002) / PI ) * .2 ) ) ) / PI );
-			
-						ctx.fillRect( sin(i) *  r + (Math.random() * (w - 100)), 
-										  cos(i) * r + (h), 
-										  3, 
+            ctx.fillStyle = ctx.strokeStyle;
+						ctx.fillRect( sin(i) *  r + (Math.random() * (w - 100)),
+										  cos(i) * r + (h),
+										  3,
 										  3 );
 					}
 					i = 0;
 				break;
-				case 4:
-					ctx.roundRect(35, 10, 225, 110, 20).stroke();
-					break;
 			}
     });
 

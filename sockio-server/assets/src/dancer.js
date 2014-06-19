@@ -6,6 +6,8 @@
     this.sections = [];
     this.bind( 'update', update );
     this.wave = 0;
+		this.speed = 5;
+    this.bgColor = "#000000";
   };
 
   Dancer.version = '0.3.2';

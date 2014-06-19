@@ -7,7 +7,6 @@
 // :)
 
 (function () {
-
   var
     AUDIO_FILE = document.getElementsByTagName('audio')[0],
     i = 0,
@@ -79,7 +78,7 @@
   }
 	// Set default pause state
   var pause = true;
-	
+
 	// Obtain all anchor tags
   var
       loading = document.getElementById( 'loading' ),
@@ -91,7 +90,7 @@
       supported = Dancer.isSupported(),
       p;
   function loaded () {
-		
+
 		// Initialize all anchors
     anchor.appendChild( document.createTextNode( supported ? 'Play Jams!' : 'Close' ) );
     anchor.setAttribute( 'href', '#' );
@@ -112,13 +111,13 @@
       p.appendChild( document.createTextNode( 'Your browser does not currently support either Web Audio API or Audio Data API. The audio may play, but the visualizers will not move to the music; check out the latest Chrome or Firefox browsers!' ) );
       loading.appendChild( p );
     }
-		
+
 		// Add pause button event-listener
     pAnchor.addEventListener( 'click', function () {
       if (pause) {dancer.pause();pause = false; pAnchor.innerText = 'Play';}else {dancer.play(); pause = true;pAnchor.innerText = 'Pause';};
 
     });
-		
+
 		// Add "Play Jams!!" event-listener
     anchor.addEventListener( 'click', function () {
       dancer.play();
@@ -126,26 +125,26 @@
       document.getElementById('pause').style.display = 'inline-block';
       document.getElementById('next').style.display = 'inline-block';
     });
-		
+
 		// Add "Next Song" event-listener
     nAnchor.addEventListener('click', function() {
       nextSong();
     });
   }
-	
+
 	// Load the first file
   // dancer.load(AUDIO_FILE);
-	
+
 	// Initialize the length
   // var length = dancer.audio.duration;
-  
-	
+
+
 	// Set window.dancer to dancer
   window.dancer = dancer;
-	
+
 	// Add event listener Key Down
-	window.addEventListener("keydown", onKeyDown, false);	
-	
+	window.addEventListener("keydown", onKeyDown, false);
+
 	// Keydown function, for the DJ
 	function onKeyDown(event){
 		var keyCode = event.keyCode;
@@ -194,7 +193,7 @@
       		}
   		}
 	}
-	
+
 	// Function to dynamically change offKick
 	function changeoffKick(color) {
   	kick.offKick = function() {
@@ -205,14 +204,14 @@
 			ctx.strokeStyle = "#fff";
 		}
 	}
-	
+
 	// Function to dynamically change onKick
 	function changeOnKick(color) {
   	kick.onKick = function() {
     	ctx.strokeStyle = color;
 		}
 	}
-	
+
 	// Function to lighten colors
 	LightenDarkenColor = function(col, amt) {
 				var usePound = false;
@@ -236,26 +235,31 @@
 				// Return lightened color
 				return (usePound?"#":"") + (g | (b << 8) | (r << 16)).toString(16);
 	}
-	
+
 	// Socket.io functions to communicate with phone
 	// Connect to server
-	
-	var socket = io.connect("192.168.1.98:3000"); // Change the IP address in this function to yours to connect to your Node.js server
+
+	var socket = io.connect("192.168.1.98:8000"); // Change the IP address in this function to yours to connect to your Node.js server
 		socket.emit("join", "hello");
 		// Change Stroke
 		socket.on("stroke", function(col){
 			kick.offKick = function() {
-		  	ctx.strokeStyle = col;			
+		  	ctx.strokeStyle = col;
+				dancer.speed = 10;
 			}
 			kick.onKick = function() {
 				ctx.strokeStyle  = "#fff";
+				dancer.speed = 5;
 			}
 			console.log(col);
 		});
-	
+
 		// Change Background
 		socket.on("change_bg", function(col){
-			document.getElementById("waveform").style.background = col;
+			// document.getElementById("waveform").style.background = col;
+      dancer.bgColor = col;
+      console.log(dancer.bgColor);
+
 		});
 		socket.on("message", function(data){
 			console.log(data);
@@ -270,9 +274,10 @@
 		      nextSong();
 		  });
 		});
-	
+
 		// Change Wavetype
 		socket.on("change_wave", function(wave){
 			dancer.wave = parseInt(wave);
-		});	
+		});
+
 })();
