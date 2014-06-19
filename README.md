@@ -45,4 +45,8 @@ Change IP address in Objective-C views, at top of document
 ```
 [_socketIO connectToHost:@"localhost" onPort:3000];
 ```
-	
+###Cusomization
+
+For changing the songs played, simply change the songs in sockio-server >> assets >> songs
+
+app.js will do the rest for you :)
