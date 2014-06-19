@@ -7,7 +7,7 @@ var fs = require("fs");
 //initialize our application
 var app = express();
 app.use(express.static(path.join(__dirname, 'assets')));
-var server = http.createServer(app).listen(8000);
+var server = http.createServer(app).listen(process.env.PORT || 8000);
 var io = socketIO.listen(server);
 var rooms = ['Main'];
 //settings
