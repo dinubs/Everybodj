@@ -9,6 +9,7 @@ var app = express();
 app.use(express.static(path.join(__dirname, 'assets')));
 var server = http.createServer(app).listen(process.env.PORT || 8000);
 var io = socketIO.listen(server);
+io.set("origins","*");
 var rooms = ['Main'];
 //settings
 var settings = {
