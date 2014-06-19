@@ -239,7 +239,7 @@
 	// Socket.io functions to communicate with phone
 	// Connect to server
 
-	var socket = io.connect("192.168.1.98:8000"); // Change the IP address in this function to yours to connect to your Node.js server
+	var socket = io.connect("107.20.137.240:80"); // Change the IP address in this function to yours to connect to your Node.js server
 		socket.emit("join", "hello");
 		// Change Stroke
 		socket.on("stroke", function(col){
