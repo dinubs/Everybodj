@@ -227,7 +227,11 @@
 	// Socket.io functions to communicate with phone
 	// Connect to server
 
+<<<<<<< HEAD
 	var socket = io.connect("http://everybodj.herokuapp.com"); // Change the IP address in this function to yours to connect to your Node.js server
+=======
+	var socket = io.connect("107.20.137.240:80"); // Change the IP address in this function to yours to connect to your Node.js server
+>>>>>>> FETCH_HEAD
 		socket.emit("join", "hello");
 		// Change Stroke
 		socket.on("stroke", function(col){

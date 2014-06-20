@@ -10,7 +10,11 @@ app.use(express.static(path.join(__dirname, 'assets')));
 var server = http.createServer(app).listen(process.env.PORT || 8000);
 console.log(process.env.PORT);
 var io = socketIO.listen(server);
+<<<<<<< HEAD
 
+=======
+io.set("origins","*");
+>>>>>>> FETCH_HEAD
 var rooms = ['Main'];
 //settings
 var settings = {
@@ -19,11 +23,15 @@ var settings = {
 
 
 app.get('/android', function(request, response){
+<<<<<<< HEAD
   response.sendfile(__dirname + settings.view_directory + '/index.html');
   response.header("Access-Control-Allow-Origin", "*");
   response.header("Access-Control-Allow-Headers", "X-Requested-With");
   response.header("Access-Control-Allow-Headers", "Content-Type");
   response.header("Access-Control-Allow-Methods", "PUT, GET, POST, DELETE, OPTIONS");
+=======
+  response.sendfile(__dirname + settings.view_directory + '/index.html')
+>>>>>>> FETCH_HEAD
 });
 app.get('/', function(request, response){
 	response.sendfile(__dirname + settings.view_directory + '/song/index.html');
