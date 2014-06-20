@@ -8,6 +8,9 @@
     this.wave = 0;
 		this.speed = 5;
     this.bgColor = "#000000";
+    this.songs = [];
+    this.currentSong = 0;
+    this.songTime = 0;
   };
 
   Dancer.version = '0.3.2';
@@ -127,7 +130,18 @@
     isPlaying : function () {
       return this.audioAdapter.isPlaying;
     },
-
+    nextSong : function () {
+      $("audio").remove();
+      if (dancer.currentSong == dancer.songs.length) {
+        dancer.currentSong = 0;
+      } else {
+        dancer.currentSong++;
+      }
+      $("body").append('<audio src="/songs/' + dancer.songs[dancer.currentSong] + '">');
+      dancer.load(document.getElementsByTagName("audio")[0]);
+      dancer.play();
+      dancer.songTime = dancer.audio.duration;
+    },
 
     /* Sections */
 
@@ -188,6 +202,9 @@
     for ( var i in this.sections ) {
       if ( this.sections[ i ].condition() )
         this.sections[ i ].callback.call( this );
+      if (dancer.getTime >= dancer.audio.duration - 0.01) {
+        dancer.nextSong();
+      }
     }
   }
 

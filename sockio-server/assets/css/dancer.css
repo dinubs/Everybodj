@@ -48,6 +48,7 @@ body {
     /*opacity: 0.9;*/
     border: 1px solid #ccc;
     text-align: center;
+    text-shadow: 0 0 10px #fff;
 }
 #loading a,#pause a, #next a, #song a, #creator, #info, #hideInfo a {
     color: #fff;
@@ -83,7 +84,7 @@ body {
     font-size: 25px;
     margin-top: 10px;
     color: #fff;
-    width: 100px;
+    width: auto;
     /*display: inline-block;*/
 }
 #song {

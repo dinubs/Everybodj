@@ -82,28 +82,22 @@
 	// Obtain all anchor tags
   var
       loading = document.getElementById( 'loading' ),
-      pause = document.getElementById( 'pause' ),
-      next = document.getElementById('next'),
       nAnchor = document.createElement('A'),
       pAnchor  = document.createElement('A'),
       anchor  = document.createElement('A'),
       supported = Dancer.isSupported(),
       p;
+      anchor.setAttribute( 'href', '#' );
+      // pAnchor.appendChild( document.createTextNode('Pause' ) );
+      pAnchor.setAttribute( 'href', '#' );
+      // nAnchor.appendChild(document.createTextNode('Next'));
+      nAnchor.setAttribute('href', '#');
   function loaded () {
 
 		// Initialize all anchors
     anchor.appendChild( document.createTextNode( supported ? 'Play Jams!' : 'Close' ) );
-    anchor.setAttribute( 'href', '#' );
-    pAnchor.appendChild( document.createTextNode('Pause' ) );
-    pAnchor.setAttribute( 'href', '#' );
-    nAnchor.appendChild(document.createTextNode('Next'));
-    nAnchor.setAttribute('href', '#');
-    pause.innerHTML = '';
-    pause.appendChild( pAnchor );
     loading.innerHTML = '';
     loading.appendChild( anchor );
-    next.innerHTML = '';
-    next.appendChild(nAnchor);
 
 		// Check if not supported
     if ( !supported ) {
@@ -114,7 +108,7 @@
 
 		// Add pause button event-listener
     pAnchor.addEventListener( 'click', function () {
-      if (pause) {dancer.pause();pause = false; pAnchor.innerText = 'Play';}else {dancer.play(); pause = true;pAnchor.innerText = 'Pause';};
+      if (pause) {dancer.pause();pause = false; }else {dancer.play(); pause = true;};
 
     });
 
@@ -123,12 +117,6 @@
       dancer.play();
       document.getElementById('loading').style.display = 'none';
       document.getElementById('pause').style.display = 'inline-block';
-      document.getElementById('next').style.display = 'inline-block';
-    });
-
-		// Add "Next Song" event-listener
-    nAnchor.addEventListener('click', function() {
-      nextSong();
     });
   }
 
@@ -143,7 +131,7 @@
   window.dancer = dancer;
 
 	// Add event listener Key Down
-	window.addEventListener("keydown", onKeyDown, false);
+	window.addEventListener("keyup", onKeyDown, false);
 
 	// Keydown function, for the DJ
 	function onKeyDown(event){
@@ -169,7 +157,7 @@
 					changeOnKick("#000");
       		break;
 			case 39: // Right Arrow - Next Song
-					nextSong();
+					dancer.nextSong();
       		break;
 			case 40: // Down Arrow - default to all black everything
 					changeoffKick('#000');
@@ -177,7 +165,7 @@
 					document.getElementById("waveform").style.background = '#000';
       		break;
 			case 18: // Alt/Option - change wavetype
-        	if (dancer.wave == 2) {dancer.wave = 0} else {dancer.wave++;};
+        	if (dancer.wave == 3) {dancer.wave = 0} else {dancer.wave++;};
       		break;
 			case 70: // f-key - request fullscreen
 					var elem = document.getElementsByTagName("canvas")[0];
@@ -239,7 +227,7 @@
 	// Socket.io functions to communicate with phone
 	// Connect to server
 
-	var socket = io.connect("192.168.1.98:8000"); // Change the IP address in this function to yours to connect to your Node.js server
+	var socket = io.connect("http://everybodj.herokuapp.com"); // Change the IP address in this function to yours to connect to your Node.js server
 		socket.emit("join", "hello");
 		// Change Stroke
 		socket.on("stroke", function(col){
@@ -263,16 +251,12 @@
 		});
 		socket.on("message", function(data){
 			console.log(data);
-			for (var i = 1; i < data.length; i++) {
-				$("body").append('<audio src="/songs/' + data[i] + '">');
+      dancer.songs = data;
+				$("body").append('<audio src="/songs/' + dancer.songs[dancer.currentSong] + '">');
 				// var audio = document.createElement("audio");
 				// audio.src = data[i];
-			}
 			dancer.load(document.getElementsByTagName("audio")[0]);
-			// Begin the recursive nextSong() function
-		  dancer.onceAt(length - 1, function() {
-		      nextSong();
-		  });
+      dancer.songTime = dancer.audio.duration;
 		});
 
 		// Change Wavetype
