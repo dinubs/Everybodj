@@ -19,7 +19,7 @@
 			  <p>Change Wave Type</p>
 			  <button class="button" data-type="0">Original</button>>
 			  <button class="button" data-type="1">Circles</button>>
-        <button class="button" data-type="2">Megaphone</button>>
+        <button class="button" data-type="2">Equalizer</button>>
         <button class="button" data-type="3">Dots</button>>
 		  </div>
 	  </div>
@@ -29,11 +29,7 @@
 	        <script type="text/javascript" src="http://cdn.jsdelivr.net/jquery.slick/1.3.6/slick.min.js"/></script>
 	<script>
 	  	$(document).ready(function() {
-<<<<<<< HEAD
 			var socket = io.connect("http://everybodj.herokuapp.com");
-=======
-			var socket = io.connect("107.20.137.240:80");
->>>>>>> FETCH_HEAD
 			$('#strokeColor').farbtastic(function callback(color){
 				console.log(color);
 				if(color != "" || color != "#000000") {

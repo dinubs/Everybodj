@@ -1,21 +1,33 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>The coolest thing &mdash; Gavin Dinubilo</title>
+		<title>Everybodj</title>
 		<link href='http://fonts.googleapis.com/css?family=Duru+Sans' rel='stylesheet' type='text/css'>
         <link href='/css/dancer.css' rel='stylesheet' type='text/css'>
 	</head>
 	<body>
 
-		<div id="loading"><div class="loader">Loading...</div></div>
+
 		<div class="wrap">
-			<div id="pause">load http://everybodj.herokuapp.com/android on your mobile device<br />
-											"f" = fullscreen (chrome only)<br />
-											space bar = pause<br />
-											alt key = change wave type<br />
-											right arrow key = random color<br />
-											left arrow key = next song</div>
+				<input type="text" id="song-name" name="song-name" placeholder="Search Songs">
+				<button class="btn" id="btn">GO</button>
+				<ul id="song-list"></ul>
 		</div>
+		<div class="side">
+			<h3>About</h3>
+			<p>
+				This is everybodj, load up <a href="http://m.everybodj.com">m.everybodj.com</a> on your mobile device and to change the color and wave types.
+			</p>
+			<h3>Key Codes</h3>
+			<ul>
+				<li>f - fullscreen (chrome only)</li>
+				<li>down arrow - change wavetype</li>
+				<li>right arrow - random colors</li>
+				<li>left arrow - change color</li>
+				<li>space bar - toggle play/pause</li>
+			</ul>
+		</div>
+		<button class="trigger"></button>
 		<canvas id="waveform" height="400" width="1024"></canvas>
 	    	<script src="http://code.jquery.com/jquery-1.11.1.js"></script>
         <script src="http://everybodj.herokuapp.com/socket.io/socket.io.js"></script>
@@ -32,9 +44,9 @@
         <script src="./plugins/dancer.fft.js"></script>
         <script src="./plugins/dancer.waveform.js"></script>
 
-		<!-- Demo stuff -->
-
+				<!-- Demo stuff -->
         <script src="./js/player.js"></script>
+
 
 	</body>
 </html>

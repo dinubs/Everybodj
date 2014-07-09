@@ -86,20 +86,15 @@
           var color = hexToRGB(this.bgColor.slice(1));
           ctx.fillStyle = "rgba("+color[0]+ ","+color[1]+","+color[2]+",0.05)";
 					ctx.fillRect(0,0,w,h);
-          for ( var i = 0, l = waveform.length; i < 500 && i < count; i++ ) {
-            ctx.beginPath();
-            ctx.arc((Math.abs(waveform[i]) * w/4), h/2, Math.abs(waveform[i]) * (h/4), 0, 2 * Math.PI, false);
-            ctx.stroke();
-            ctx.beginPath();
-            ctx.arc((Math.abs(waveform[i]) * w/2), h/2, Math.abs(waveform[i]) * (h/4), 0, 2 * Math.PI, false);
-            ctx.stroke();
-            ctx.closePath();
+          ctx.fillStyle = ctx.strokeStyle;
+          for ( var i = 0; i < waveform.length; i++ ){
+              ctx.fillRect(i*5,h- (Math.abs( waveform[i] * h)),3,h);
           }
           break;
 				case 3:
 					var color = hexToRGB(this.bgColor.slice(1));
-         ctx.fillStyle = "rgba("+color[0]+ ","+color[1]+","+color[2]+",0.05)";
-         ctx.fillRect(0,0,w,h);
+          ctx.fillStyle = "rgba("+color[0]+ ","+color[1]+","+color[2]+",0.05)";
+          ctx.fillRect(0,0,w,h);
 					// ctx.fillStyle = 'rgba(0,255,255,.5)';
 					// ctx.globalCompositeOperation = 'lighter';
 					time += .1;

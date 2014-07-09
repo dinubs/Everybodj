@@ -11,10 +11,16 @@
     AUDIO_FILE = document.getElementsByTagName('audio')[0],
     i = 0,
     waveform = document.getElementById( 'waveform' ),
+    wrap = document.querySelector(".wrap"),
     ctx = waveform.getContext( '2d' ),
     dancer, kick;
     ctx.canvas.width  = window.innerWidth;
-
+  var button = document.querySelector('.trigger');
+  var openCloseMenu = function() {
+      wrap.classList.toggle("open");
+      button.classList.toggle('selected');
+  }
+  button.onclick     = openCloseMenu;
   var colors = ['#123456',
                 '#bada55',
                 '#00FFFF',
@@ -81,7 +87,6 @@
 
 	// Obtain all anchor tags
   var
-      loading = document.getElementById( 'loading' ),
       nAnchor = document.createElement('A'),
       pAnchor  = document.createElement('A'),
       anchor  = document.createElement('A'),
@@ -95,29 +100,13 @@
   function loaded () {
 
 		// Initialize all anchors
-    anchor.appendChild( document.createTextNode( supported ? 'Play Jams!' : 'Close' ) );
-    loading.innerHTML = '';
-    loading.appendChild( anchor );
+
 
 		// Check if not supported
     if ( !supported ) {
       p = document.createElement('P');
       p.appendChild( document.createTextNode( 'Your browser does not currently support either Web Audio API or Audio Data API. The audio may play, but the visualizers will not move to the music; check out the latest Chrome or Firefox browsers!' ) );
-      loading.appendChild( p );
     }
-
-		// Add pause button event-listener
-    pAnchor.addEventListener( 'click', function () {
-      if (pause) {dancer.pause();pause = false; }else {dancer.play(); pause = true;};
-
-    });
-
-		// Add "Play Jams!!" event-listener
-    anchor.addEventListener( 'click', function () {
-      dancer.play();
-      document.getElementById('loading').style.display = 'none';
-      document.getElementById('pause').style.display = 'inline-block';
-    });
   }
 
 	// Load the first file
@@ -136,7 +125,9 @@
 	// Keydown function, for the DJ
 	function onKeyDown(event){
 		var keyCode = event.keyCode;
-
+    if($('input').is(':focus')) {
+      return true;
+    }
 		switch(keyCode){
 			case 32: // Space Bar - Play/Pause
 					if (pause) {
@@ -156,16 +147,16 @@
 					changeoffKick("#ff007c");
 					changeOnKick("#000");
       		break;
-			case 39: // Right Arrow - Next Song
-					dancer.nextSong();
-      		break;
+			// case 39: // Right Arrow - Next Song
+			// 		dancer.nextSong();
+      // 		break;
 			case 40: // Down Arrow - default to all black everything
-					changeoffKick('#000');
-					changeOnKick('#000');
-					document.getElementById("waveform").style.background = '#000';
+					if (dancer.wave == 3) {dancer.wave = 0} else {dancer.wave++;};
+          ctx.clearRect(0,0,ctx.canvas.width, ctx.canvas.height);
       		break;
 			case 18: // Alt/Option - change wavetype
         	if (dancer.wave == 3) {dancer.wave = 0} else {dancer.wave++;};
+          ctx.clearRect(0,0,ctx.canvas.width, ctx.canvas.height);
       		break;
 			case 70: // f-key - request fullscreen
 					var elem = document.getElementsByTagName("canvas")[0];
@@ -174,12 +165,13 @@
 			case 187: // = key - change background color
 					document.getElementById("waveform").style.background = getRandomColor();
       		break;
-			case 191: // (/) key - randomly change everything
+			case 39: // (/) key - randomly change everything
 					kick.offKick = function () {
 						ctx.strokeStyle = getRandomColor();
           	ctx.fillStyle = getRandomColor();
       		}
   		}
+      return true;
 	}
 
 	// Function to dynamically change offKick
@@ -227,11 +219,9 @@
 	// Socket.io functions to communicate with phone
 	// Connect to server
 
-<<<<<<< HEAD
 	var socket = io.connect("http://everybodj.herokuapp.com"); // Change the IP address in this function to yours to connect to your Node.js server
-=======
-	var socket = io.connect("107.20.137.240:80"); // Change the IP address in this function to yours to connect to your Node.js server
->>>>>>> FETCH_HEAD
+
+ // Change the IP address in this function to yours to connect to your Node.js server
 		socket.emit("join", "hello");
 		// Change Stroke
 		socket.on("stroke", function(col){
@@ -255,17 +245,135 @@
 		});
 		socket.on("message", function(data){
 			console.log(data);
-      dancer.songs = data;
-				$("body").append('<audio src="/songs/' + dancer.songs[dancer.currentSong] + '">');
+      // dancer.songs = data;
+				// $("body").append('<audio src="/songs/' + dancer.songs[dancer.currentSong] + '">');
 				// var audio = document.createElement("audio");
 				// audio.src = data[i];
-			dancer.load(document.getElementsByTagName("audio")[0]);
-      dancer.songTime = dancer.audio.duration;
+			// dancer.load(document.getElementsByTagName("audio")[0]);
+      // dancer.songTime = dancer.audio.duration;
 		});
+    function extractTitle(url) {
+    var lastSlash = url.lastIndexOf('/');
+    if (lastSlash >= 0 && lastSlash < url.length - 1) {
+        var res =  url.substring(lastSlash + 1, url.length - 4);
+        return res;
+    } else {
+        return url;
+    }
+}
 
+function getTitle(title, artist, url) {
+    if (title == undefined || title.length == 0 || title === '(unknown title)' || title == 'undefined') {
+        if (url) {
+            title = extractTitle(url);
+        } else {
+            title = null;
+        }
+    } else {
+        if (artist !== '(unknown artist)') {
+            title = title + ' by ' + artist;
+        }
+    }
+    return title;
+}
+
+    function listSong(r) {
+    var title = getTitle(r.title, r.artist, null);
+    var item = null;
+    if (title) {
+        var item = $('<li>').append(title);
+
+        item.attr('class', 'song-link');
+        item.click(function() {
+                showPlotPage(r.id);
+            });
+    }
+    return item;
+}
+
+function listSongAsAnchor(r) {
+    var title = getTitle(r.title, r.artist, r.url);
+    var item = $('<li>').html('<a href="index.html?trid=' + r.trid + '">' + title + '</a>');
+    return item;
+}
+
+function listTracks(tracks) {
+    $('#song-list').empty();
+    for (var i = 0; i < tracks.length; i++) {
+        var s = tracks[i];
+        var item = listSong(s);
+        if (item) {
+            $('#song-list').append(listSongAsAnchor(s));
+        }
+    }
+}
 		// Change Wavetype
 		socket.on("change_wave", function(wave){
 			dancer.wave = parseInt(wave);
 		});
+    function searchForTrack(q) {
+        console.log("search for a track");
+        // var q = $("#search-text").val();
+        console.log(q);
+        $("#song-list").show();
+        if (q.length > 0) {
+            var url = 'http://labs.echonest.com/Uploader/search'
+            $.getJSON(url, { q:q, results:30}, function(data) {
+                console.log(data);
+                for (var i = 0; i < data.length; i++) {
+                    console.log("data");
+                }
+                // fetchAnalysis(data[0].trid)
+                listTracks(data);
+            });
+        }
+    }
 
+    function fetchAnalysis(trid) {
+      var url = 'http://static.echonest.com/infinite_jukebox_data/' + trid + '.json';
+      $.getJSON(url, function(data) { console.log(data);
+        $("body").append('<audio src="' + data.response.track.info.url + '">');
+        var audio = document.createElement("audio");
+        audio.src = data.response.track.info.url;
+        dancer.load(document.getElementsByTagName("audio")[0]);
+        dancer.songTime = dancer.audio.duration;
+        dancer.play();
+         })
+        .error( function() {
+            console.log("Sorry, can't find info for that track");
+        });
+    }
+
+    $("#btn").click(searchForTrack($("#song-name").val()));
+    $("#song-name").keyup(function(e) {
+        if (e.keyCode == 13) {
+            searchForTrack($("#song-name").val());
+        }
+        if (e.keyCode == 70) {
+          return false;
+        }
+    });
+
+
+function processParams() {
+    var params = {};
+    var q = document.URL.split('?')[1];
+    if(q != undefined){
+        q = q.split('&');
+        for(var i = 0; i < q.length; i++){
+            var pv = q[i].split('=');
+            var p = pv[0];
+            var v = pv[1];
+            params[p] = v;
+        }
+    }
+
+    if ('trid' in params) {
+        var trid = params['trid'];
+        var thresh = 0;
+        fetchAnalysis(trid);
+    }
+    $("#song-list").hide();
+}
+processParams();
 })();
