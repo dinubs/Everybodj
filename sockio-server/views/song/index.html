@@ -1,31 +1,36 @@
 <!DOCTYPE html>
 <html>
 	<head>
+		<script>
+			if (screen.width <= 699) {
+				document.location = "http://m.everybodj.com";
+			}
+		</script>
 		<title>Everybodj</title>
 		<link href='http://fonts.googleapis.com/css?family=Duru+Sans' rel='stylesheet' type='text/css'>
         <link href='/css/dancer.css' rel='stylesheet' type='text/css'>
 	</head>
 	<body>
-
-
-		<div class="wrap">
-				<input type="text" id="song-name" name="song-name" placeholder="Search Songs">
-				<button class="btn" id="btn">GO</button>
-				<ul id="song-list"></ul>
-		</div>
 		<div class="side">
-			<h3>About</h3>
-			<p>
-				This is everybodj, load up <a href="http://m.everybodj.com">m.everybodj.com</a> on your mobile device and to change the color and wave types.
-			</p>
-			<h3>Key Codes</h3>
-			<ul>
-				<li>f - fullscreen (chrome only)</li>
-				<li>down arrow - change wavetype</li>
-				<li>right arrow - random colors</li>
-				<li>left arrow - change color</li>
-				<li>space bar - toggle play/pause</li>
-			</ul>
+			<div class="slide-one">
+				<h3 id="search">Search for a Song</h3>
+					<input type="text" id="song-name" name="song-name" placeholder="Search Songs">
+					<button class="btn" id="btn">GO</button>
+					<ul id="song-list"></ul>
+				<h3>About</h3>
+				<p>
+					This is everybodj, load up <a href="http://m.everybodj.com">m.everybodj.com</a> on your mobile device and to change the color and wave types.
+				</p>
+				<h3>Key Codes</h3>
+				<ul>
+					<li>f - fullscreen (chrome only)</li>
+					<li>down arrow - change wavetype</li>
+					<li>right arrow - random colors</li>
+					<li>left arrow - change color</li>
+					<li>space bar - toggle play/pause</li>
+				</ul>
+				<h3 id="tweet">Tweet this page</h3>
+			</div>
 		</div>
 		<button class="trigger"></button>
 		<canvas id="waveform" height="400" width="1024"></canvas>

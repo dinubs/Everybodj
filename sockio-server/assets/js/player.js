@@ -19,7 +19,7 @@
   var openCloseMenu = function() {
       wrap.classList.toggle("open");
       button.classList.toggle('selected');
-  }
+  };
   button.onclick     = openCloseMenu;
   var colors = ['#123456',
                 '#bada55',
@@ -45,7 +45,8 @@
 		for(var i = 0; i < 6; i++) {
 			color += letters[Math.floor(Math.random() * letters.length)];
 		}
-    return color;
+    return "hsla(" + (Math.random() * 360) + ", 100%, 50%, 1.0)";
+    // return color;
   }
 
   dancer = new Dancer();
@@ -57,7 +58,7 @@
     offKick: function() {
       dancer.waveform.spacing = dancer.getFrequency(400, 800);
       // ctx.strokeStyle= getRandomColor();
-      ctx.strokeStyle = '#123456';
+      ctx.strokeStyle = '#31ebfb';
     }
   }).on();
 
@@ -65,20 +66,14 @@
   dancer
     .waveform( waveform, { strokeStyle: '#666', strokeWidth: 3 });
 
-	// Check if dancer is supported
-  Dancer.isSupported() || loaded();
-  !dancer.isLoaded() ? dancer.bind( 'loaded', loaded ) : loaded();
-
 	// Next Song recursive function
   function nextSong () {
    dancer.pause();
    dancer.audio.currentTime = dancer.audio.duration;
    i = i + 1;
-   console.log(i);
    dancer.load( document.getElementsByTagName('audio')[i] );
    window.dancer = dancer;
    length = dancer.audio.duration;
-   console.log(length);
    dancer.onceAt(length - 0.1, function() {nextSong();});
    dancer.play();
   }
@@ -151,11 +146,11 @@
 			// 		dancer.nextSong();
       // 		break;
 			case 40: // Down Arrow - default to all black everything
-					if (dancer.wave == 3) {dancer.wave = 0} else {dancer.wave++;};
+					if (dancer.wave == 3) {dancer.wave = 0;} else {dancer.wave++;}
           ctx.clearRect(0,0,ctx.canvas.width, ctx.canvas.height);
       		break;
 			case 18: // Alt/Option - change wavetype
-        	if (dancer.wave == 3) {dancer.wave = 0} else {dancer.wave++;};
+        	if (dancer.wave == 3) {dancer.wave = 0;} else {dancer.wave++;}
           ctx.clearRect(0,0,ctx.canvas.width, ctx.canvas.height);
       		break;
 			case 70: // f-key - request fullscreen
@@ -169,7 +164,7 @@
 					kick.offKick = function () {
 						ctx.strokeStyle = getRandomColor();
           	ctx.fillStyle = getRandomColor();
-      		}
+      		};
   		}
       return true;
 	}
@@ -179,17 +174,17 @@
   	kick.offKick = function() {
 			ctx.strokeStyle = color;
 			ctx.fillStyle = color;
-		}
+		};
 		kick.onKick = function() {
 			ctx.strokeStyle = "#fff";
-		}
+		};
 	}
 
 	// Function to dynamically change onKick
 	function changeOnKick(color) {
   	kick.onKick = function() {
     	ctx.strokeStyle = color;
-		}
+		};
 	}
 
 	// Function to lighten colors
@@ -214,44 +209,9 @@
 				// Colors have been enlightened
 				// Return lightened color
 				return (usePound?"#":"") + (g | (b << 8) | (r << 16)).toString(16);
-	}
+	};
 
-	// Socket.io functions to communicate with phone
-	// Connect to server
 
-	var socket = io.connect("http://everybodj.herokuapp.com"); // Change the IP address in this function to yours to connect to your Node.js server
-
- // Change the IP address in this function to yours to connect to your Node.js server
-		socket.emit("join", "hello");
-		// Change Stroke
-		socket.on("stroke", function(col){
-			kick.offKick = function() {
-		  	ctx.strokeStyle = col;
-				dancer.speed = 10;
-			}
-			kick.onKick = function() {
-				ctx.strokeStyle  = "#fff";
-				dancer.speed = 5;
-			}
-			console.log(col);
-		});
-
-		// Change Background
-		socket.on("change_bg", function(col){
-			// document.getElementById("waveform").style.background = col;
-      dancer.bgColor = col;
-      console.log(dancer.bgColor);
-
-		});
-		socket.on("message", function(data){
-			console.log(data);
-      // dancer.songs = data;
-				// $("body").append('<audio src="/songs/' + dancer.songs[dancer.currentSong] + '">');
-				// var audio = document.createElement("audio");
-				// audio.src = data[i];
-			// dancer.load(document.getElementsByTagName("audio")[0]);
-      // dancer.songTime = dancer.audio.duration;
-		});
     function extractTitle(url) {
     var lastSlash = url.lastIndexOf('/');
     if (lastSlash >= 0 && lastSlash < url.length - 1) {
@@ -263,7 +223,7 @@
 }
 
 function getTitle(title, artist, url) {
-    if (title == undefined || title.length == 0 || title === '(unknown title)' || title == 'undefined') {
+    if (title === undefined || title.length === 0 || title == '(unknown title)' || title == 'undefined') {
         if (url) {
             title = extractTitle(url);
         } else {
@@ -281,7 +241,7 @@ function getTitle(title, artist, url) {
     var title = getTitle(r.title, r.artist, null);
     var item = null;
     if (title) {
-        var item = $('<li>').append(title);
+        item = $('<li>').append(title);
 
         item.attr('class', 'song-link');
         item.click(function() {
@@ -307,18 +267,15 @@ function listTracks(tracks) {
         }
     }
 }
-		// Change Wavetype
-		socket.on("change_wave", function(wave){
-			dancer.wave = parseInt(wave);
-		});
     function searchForTrack(q) {
         console.log("search for a track");
         // var q = $("#search-text").val();
         console.log(q);
         $("#song-list").show();
+        $(".artists").hide();
         if (q.length > 0) {
-            var url = 'http://labs.echonest.com/Uploader/search'
-            $.getJSON(url, { q:q, results:30}, function(data) {
+            var url = 'http://labs.echonest.com/Uploader/search';
+            $.ajax(url, { q:q, results:50, headers: { 'Access-Control-Allow-Origin': '*' }}, function(data) {
                 console.log(data);
                 for (var i = 0; i < data.length; i++) {
                     console.log("data");
@@ -328,26 +285,53 @@ function listTracks(tracks) {
             });
         }
     }
-
+    function songsByArtist(artist) {
+      $("#song-list").show();
+      if (artist.length > 0) {
+          $("#song-list").before("<p class='artists'>More songs by this artist</p>");
+          var url = 'http://labs.echonest.com/Uploader/search';
+          $.getJSON(url, { q:artist, results:10}, function(data) {
+              console.log(data);
+              for (var i = 0; i < data.length; i++) {
+                  console.log("data");
+              }
+              // fetchAnalysis(data[0].trid)
+              listTracks(data);
+          });
+    }
+  }
+  function updateTime(audio) {
+    var minutes1 = Math.floor(audio / 60);
+    var seconds1 = audio - minutes1 * 60;
+    var minutes2 = Math.floor(dancer.getTime() / 60);
+    var seconds2 = dancer.getTime() - minutes2 * 60;
+    $("#duration").text(minutes2 + ":" + seconds2 + "/" + minutes1 + ":" + seconds1);
+  }
+var time = 0;
     function fetchAnalysis(trid) {
       var url = 'http://static.echonest.com/infinite_jukebox_data/' + trid + '.json';
       $.getJSON(url, function(data) { console.log(data);
         $("body").append('<audio src="' + data.response.track.info.url + '">');
+        $("#search").before("<h3>Current Song</h3><p>" + getTitle(data.response.track.title, data.response.track.artist) + "</p>");
+        $("#search").before("<p id='duration'></p>");
+        songsByArtist(data.response.track.artist);
         var audio = document.createElement("audio");
         audio.src = data.response.track.info.url;
         dancer.load(document.getElementsByTagName("audio")[0]);
-        dancer.songTime = dancer.audio.duration;
+        time = dancer.audio.duration;
+        document.title = getTitle(data.response.track.title, data.response.track.artist);
         dancer.play();
          })
         .error( function() {
-            console.log("Sorry, can't find info for that track");
+            $("#song-list").before("<p class='artists'>We can't seem to find that track, try another search</p>");
         });
+        setInterval(updateTime(time), 1000);
     }
 
     $("#btn").click(searchForTrack($("#song-name").val()));
     $("#song-name").keyup(function(e) {
         if (e.keyCode == 13) {
-            searchForTrack($("#song-name").val());
+          searchForTrack($("#song-name").val());
         }
         if (e.keyCode == 70) {
           return false;
@@ -355,25 +339,40 @@ function listTracks(tracks) {
     });
 
 
-function processParams() {
-    var params = {};
-    var q = document.URL.split('?')[1];
-    if(q != undefined){
-        q = q.split('&');
-        for(var i = 0; i < q.length; i++){
-            var pv = q[i].split('=');
-            var p = pv[0];
-            var v = pv[1];
-            params[p] = v;
-        }
-    }
 
-    if ('trid' in params) {
-        var trid = params['trid'];
-        var thresh = 0;
-        fetchAnalysis(trid);
-    }
-    $("#song-list").hide();
-}
-processParams();
+  function processParams() {
+      var params = {};
+      var q = document.URL.split('?')[1];
+      if(q !== undefined){
+          q = q.split('&');
+          for(var i = 0; i < q.length; i++){
+              var pv = q[i].split('=');
+              var p = pv[0];
+              var v = pv[1];
+              params[p] = v;
+          }
+      }
+
+      if ('trid' in params) {
+          var trid = params.trid;
+          var thresh = 0;
+          fetchAnalysis(trid);
+      }
+      $("#song-list").hide();
+  }
+  processParams();
+  if (time > 0) {
+    setInterval(function(){
+      var minutes1 = Math.floor(time / 60);
+      var seconds1 = Math.floor(time - minutes1 * 60);
+      var minutes2 = Math.floor(dancer.getTime() / 60);
+      var seconds2 = Math.floor(dancer.getTime() - minutes2 * 60);
+      $("#duration").text(minutes2 + ":" + seconds2 + "/" + minutes1 + ":" + seconds1);
+}, 1000);
+  }
+  $("#tweet").after(function(){
+    $(this).after('<a href="https://twitter.com/intent/tweet?button_hashtag=Everybodj' +
+                  '&text=Check%20this%20out%20' + document.title + '" class="twitter-share-button" data-lang="en">Tweet</a><script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="https://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>'
+    );
+  });
 })();

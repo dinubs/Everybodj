@@ -22,10 +22,10 @@ jQuery.fn.farbtastic = function (callback) {
   return this;
 };
 
-jQuery.farbtastic = function (container, callback) {
-  var container = $(container).get(0);
+jQuery.farbtastic = function (container1, callback) {
+  var container = $(container1).get(0);
   return container.farbtastic || (container.farbtastic = new jQuery._farbtastic(container, callback));
-}
+};
 
 jQuery._farbtastic = function (container, callback) {
   // Store farbtastic object
@@ -78,12 +78,12 @@ jQuery._farbtastic = function (container, callback) {
       }
     }
     return this;
-  }
+  };
   fb.updateValue = function (event) {
     if (this.value && this.value != fb.color) {
       fb.setColor(this.value);
     }
-  }
+  };
 
   /**
    * Change color with HTML syntax #123456
@@ -97,7 +97,7 @@ jQuery._farbtastic = function (container, callback) {
       fb.updateDisplay();
     }
     return this;
-  }
+  };
 
   /**
    * Change color with HSL triplet [0..1, 0..1, 0..1]
@@ -108,7 +108,7 @@ jQuery._farbtastic = function (container, callback) {
     fb.color = fb.pack(fb.rgb);
     fb.updateDisplay();
     return this;
-  }
+  };
 
   /////////////////////////////////////////////////////
 

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>5765D514-B042-4E79-863F-3160D38F9E7D</string>
+	<key>IDESourceControlProjectName</key>
+	<string>socketIOexample</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>5307845C-CBFB-496E-8FE9-3E85051F7C0A</key>
+		<string>https://github.com/gavindinubilo/Everybodj.git</string>
+		<key>BA8E93FF-7165-44E8-B159-A5E305EF62AF</key>
+		<string>https://github.com/gavindinubilo/Everybodj.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>socketIOexample/socketIOexample.xcodeproj/project.xcworkspace</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>5307845C-CBFB-496E-8FE9-3E85051F7C0A</key>
+		<string>../../..</string>
+		<key>BA8E93FF-7165-44E8-B159-A5E305EF62AF</key>
+		<string>../../../../everybodj</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://github.com/gavindinubilo/Everybodj.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>110</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>5307845C-CBFB-496E-8FE9-3E85051F7C0A</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>BA8E93FF-7165-44E8-B159-A5E305EF62AF</string>
+			<key>IDESourceControlWCCName</key>
+			<string>everybodj</string>
+		</dict>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>5307845C-CBFB-496E-8FE9-3E85051F7C0A</string>
+			<key>IDESourceControlWCCName</key>
+			<string>Everybodj</string>
+		</dict>
+	</array>
+</dict>
+</plist>
